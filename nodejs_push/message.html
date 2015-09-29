@@ -1,0 +1,56 @@
+<html>
+	<head>
+	<!-- 
+	 * Author:		Ramesh
+	 * Contact: 	ramesh.np2002@gmail.com
+	 * Twitter:		@rameshnp2002
+	-->
+	
+	
+		<title>Push notification server streaming on a MySQL db</title>
+		<style>
+			dd,dt {
+				float:left;
+				margin:0;
+				padding:5px;
+				clear:both;
+				display:block;
+				width:100%;
+
+			}
+			dt {
+				background:#ddd;
+			}
+			time {
+				color:gray;
+			}
+		</style>
+	</head>
+	<body>
+        <time></time>
+    <div id="container">Loading ...</div>
+
+	
+    <script src="socket.io/socket.io.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+
+    <script>
+
+        // create a new websocket
+        var socket = io.connect('http://lfmx.com:3000');
+        // on message received we print all the data inside the #container div
+        socket.on('notification', function (data) {
+			console.log(data.messages);
+			var msgList = "<dl>";
+			$.each(data.messages,function(index,msg){
+				msgList += "<dt>" + msg.type + " : "+ msg.message+"</dt>" ;
+			});
+			msgList += "</dl>";
+			$('#container').html(msgList);
+	   
+			$('time').html('Last Update:' + data.time);
+		});
+    </script>
+    </body>
+</html>
